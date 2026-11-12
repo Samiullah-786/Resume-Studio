@@ -11,7 +11,8 @@
 </head>
 
 <body>
-  <header class="topbar"><a class="brand" href="#">
+  <header class="topbar">
+    <a class="brand" href="#">
       <span class="brand-mark">R</span>
       <span>resume
         <span class="brand-light">studio</span>
@@ -24,8 +25,8 @@
       </span>
       <button class="button outline" id="resetBtn" type="button">Reset</button>
       <button class="button primary" id="printBtn" type="button">
-        <span>↓</span>
-        Export PDF</button>
+        <span>↓</span> Export PDF
+      </button>
     </div>
   </header>
   <main class="layout">
@@ -36,12 +37,16 @@
           <h1>Make your next move.</h1>
           <p class="muted">Add your details. Your resume updates as you type.</p>
         </div>
-        <div class="score-card">
+        <button class="score-card" id="atsDetails" type="button" aria-haspopup="dialog"
+          aria-label="View ATS readiness checklist">
           <span class="score-ring" id="scoreRing">
             <b id="scoreValue">0</b>
           </span>
-          <span>ATS<br>readiness</span>
-        </div>
+          <span>ATS
+            <br>readiness
+            <small>View checklist ↗</small>
+          </span>
+        </button>
       </div>
       <div class="progress-mini">
         <span id="completionBar"></span>
@@ -62,30 +67,39 @@
             <label class="span-2">Professional title
               <input data-field="title" placeholder="e.g. Frontend Developer">
             </label>
-            <label>Email
+            <label class="span-2">Email
               <input data-field="email" type="email" autocomplete="email" placeholder="you@example.com">
             </label>
-            <label>Phone
+            <label class="span-2">Phone
               <input data-field="phone" autocomplete="tel" placeholder="+92 300 0000000">
             </label>
-            <label>Location
-              <input data-field="location" autocomplete="address-level2"
-                placeholder="Lahore, Pakistan"></label><label>Website / LinkedIn<input data-field="link"
-                placeholder="linkedin.com/in/you"></label>
+            <label class="span-2">Location
+              <input data-field="location" autocomplete="address-level2" placeholder="Lahore, Pakistan">
+            </label>
+            <label class="span-2">Website / LinkedIn
+              <input data-field="link" placeholder="linkedin.com/in/you">
+            </label>
           </div>
         </section>
         <section class="form-card">
-          <div class="section-title"><span class="number">02</span>
+          <div class="section-title">
+            <span class="number">02</span>
             <div>
               <h2>Professional summary</h2>
               <p>A concise introduction to your strengths</p>
             </div>
-          </div><label class="full-label">Summary<textarea data-field="summary" rows="4" maxlength="500"
-              placeholder="Write 2–4 clear sentences about your experience, strengths and the value you bring."></textarea></label>
-          <div class="field-hint"><span id="summaryCount">0</span>/500 characters · Keep it focused and specific</div>
+          </div>
+          <label class="full-label">Summary
+            <textarea data-field="summary" rows="4" maxlength="500"
+              placeholder="Write 2–4 clear sentences about your experience, strengths and the value you bring."></textarea>
+          </label>
+          <div class="field-hint">
+            <span id="summaryCount">0</span>/500 characters · Keep it focused and specific
+          </div>
         </section>
         <section class="form-card">
-          <div class="section-title section-with-action"><span class="number">03</span>
+          <div class="section-title section-with-action">
+            <span class="number">03</span>
             <div>
               <h2>Experience</h2>
               <p>Show the impact of your work</p>
@@ -94,7 +108,8 @@
           <div id="experienceFields" class="repeat-fields"></div>
         </section>
         <section class="form-card">
-          <div class="section-title section-with-action"><span class="number">04</span>
+          <div class="section-title section-with-action">
+            <span class="number">04</span>
             <div>
               <h2>Education</h2>
               <p>Your studies and qualifications</p>
@@ -103,22 +118,37 @@
           <div id="educationFields" class="repeat-fields"></div>
         </section>
         <section class="form-card">
-          <div class="section-title"><span class="number">05</span>
+          <div class="section-title section-with-action">
+            <span class="number">05</span>
+            <div>
+              <h2>Projects</h2>
+              <p>Showcase work that demonstrates your skills</p>
+            </div><button class="small-add" id="addProject" type="button">＋ Add project</button>
+          </div>
+          <div id="projectFields" class="repeat-fields"></div>
+        </section>
+        <section class="form-card">
+          <div class="section-title">
+            <span class="number">06</span>
             <div>
               <h2>Skills</h2>
               <p>Separate each skill with a comma</p>
             </div>
-          </div>
-          <label class="full-label">Key skills
-            <input data-field="skills" placeholder="JavaScript, React, UI design, Communication">
-          </label>
+          </div><label class="full-label">Key skills<input data-field="skills"
+              placeholder="JavaScript, React, UI design, Communication"></label>
           <div class="skills-preview" id="skillChips"></div>
         </section>
       </div>
-      <p class="privacy-note">
-        <span>◈</span>
-        Your information stays in this browser. Nothing is uploaded.
-      </p>
+      <div class="privacy-row">
+        <p class="privacy-note">
+          <span>◈</span> Your information stays in this browser. Nothing is uploaded.
+        </p>
+        <div class="backup-actions">
+          <button id="backupBtn" type="button">↓ Backup</button>
+          <button id="restoreBtn" type="button">↑ Import</button>
+          <input id="restoreFile" type="file" accept="application/json,.json" hidden>
+        </div>
+      </div>
     </section>
     <aside class="preview-side">
       <div class="preview-toolbar">
@@ -129,6 +159,7 @@
           <select id="templateSelect">
             <option value="modern">Modern</option>
             <option value="classic">Classic</option>
+            <option value="executive">Executive</option>
           </select>
         </label>
         <label class="color-control">Accent
@@ -157,16 +188,39 @@
             <h2>Education</h2>
             <div id="previewEducation"></div>
           </section>
+          <section class="resume-section" id="projectsSection">
+            <h2>Selected projects</h2>
+            <div id="previewProjects"></div>
+          </section>
           <section class="resume-section" id="skillsSection">
             <h2>Core skills</h2>
-            <div id="previewSkills" class="preview-skills"><span>Add your skills in the editor</span></div>
+            <div id="previewSkills" class="preview-skills">
+              <span>Add your skills in the editor</span>
+            </div>
           </section>
           <footer class="resume-footer">CREATED WITH RESUME STUDIO</footer>
         </article>
       </div>
-      <p class="preview-tip">Tip: Export PDF opens your browser's print dialog. Choose <b>Save as PDF</b>.</p>
+      <p class="preview-tip">Tip: Export PDF opens your browser's print dialog. Choose
+        <b>Save as PDF</b>.
+      </p>
     </aside>
   </main>
+  <dialog class="ats-dialog" id="atsDialog" aria-labelledby="atsTitle">
+    <div class="ats-dialog-head">
+      <div>
+        <p class="eyebrow">RESUME QUALITY CHECK</p>
+        <h2 id="atsTitle">ATS readiness</h2>
+        <p class="ats-dialog-sub">A useful checklist—not a hiring guarantee.</p>
+      </div>
+      <button id="closeAts" class="close-ats" type="button" aria-label="Close checklist">×</button>
+    </div>
+    <div id="atsChecklist" class="ats-checklist"></div>
+    <div class="ats-tip">
+      <b>Quick tip</b>
+      <span>Use clear section headings and describe impact with numbers where you can.</span>
+    </div>
+  </dialog>
   <div class="toast" id="toast" role="status"></div>
 </body>
 
